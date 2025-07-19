@@ -111,3 +111,16 @@ Validation Error Count: 1  ↵
     
         CUSTOM LOGGING AT 2025-07-19 13:26:06 - [Prisma] Connected to the database  ↵  
     
+        CUSTOM LOGGING AT 2025-07-19 13:42:35 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:42:35 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:43:03 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:43:03 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:43:18 - Error during upsertAllChunks: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.
+
+Troubleshooting URL: https://js.langchain.com/docs/troubleshooting/errors/MODEL_RATE_LIMIT/
+  ↵  
+    

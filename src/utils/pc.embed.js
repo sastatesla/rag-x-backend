@@ -4,6 +4,7 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import dotenv from 'dotenv';
 import pinecone from '../configs/pinecone.js';
 import { chunkCategory, chunkCustomer, chunkOrder, chunkProduct, chunkStore } from '../helpers/chunk&upsert.js';
+import eventEmitter from './logging.js';
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -66,9 +67,10 @@ async function upsertAllChunks() {
     await embedAndUpsert(chunk);
   }
 
-  console.log('All chunks embedded and upserted to Pinecone!');
+  eventEmitter.emit('logging',`All chunks embedded and upserted to Pinecone!`);
 }
-
 upsertAllChunks()
-  .catch((err) => console.error(err))
+  .catch((err) => {
+    eventEmitter.emit('logging', `Error during upsertAllChunks: ${err.message || err}`);
+  })
   .finally(() => prisma.$disconnect());
