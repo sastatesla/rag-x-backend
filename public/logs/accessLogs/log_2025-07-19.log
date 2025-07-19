@@ -1,0 +1,113 @@
+
+        CUSTOM LOGGING AT 2025-07-19 12:56:54 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 12:56:54 - [Prisma] Connection failed:  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:07:12 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:07:12 - [Prisma] Connection failed:  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:09:55 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:09:55 - [Prisma] Connection failed: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:7[0m
+[1;94m   | [0m
+[1;94m 6 | [0m  provider = "postgresql"
+[1;94m 7 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:10:26 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:10:26 - [Prisma] Connection failed: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:7[0m
+[1;94m   | [0m
+[1;94m 6 | [0m  provider = "postgresql"
+[1;94m 7 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:10:42 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:10:42 - [Prisma] Connection failed: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:7[0m
+[1;94m   | [0m
+[1;94m 6 | [0m  provider = "postgresql"
+[1;94m 7 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:11:28 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:11:28 - [Prisma] Connection failed: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:7[0m
+[1;94m   | [0m
+[1;94m 6 | [0m  provider = "postgresql"
+[1;94m 7 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:12:55 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:12:55 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:14 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:14 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:17 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:17 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:26 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:16:26 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:18:51 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:18:52 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:13 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:13 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:20 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:20 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:37 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:37 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:38 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:38 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:42 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:19:42 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:03 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:03 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:04 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:04 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:10 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:10 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:17 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:20:17 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:26:06 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 13:26:06 - [Prisma] Connected to the database  ↵  
+    

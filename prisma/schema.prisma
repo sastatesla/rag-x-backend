@@ -1,0 +1,91 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+model Customer {
+  id              String   @id @default(uuid()) @map("_id")
+  name            String?
+  phone           String   @unique
+  email           String?
+  date            DateTime @default(now())
+  secretKey       String
+  deliveryAddress String[] 
+
+  @@map("customers")
+}
+
+model Store {
+  id              String   @id @default(uuid()) @map("_id")
+  logo             String
+  storeCategory    String?
+  businessType     String?
+  gstNumber        String?
+  storeName        String
+  email            String?
+  address          String?
+  location         Json     
+  deliveryRadius   Float?
+  deliveryDuration Float?
+  phoneNumber      String
+  isClosed         Boolean  @default(false)
+  operatingTime    Json    
+  notes            String   @default("")
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("stores")
+}
+
+model StoreProduct {
+  id                String    @id @default(uuid()) @map("_id")
+  storeId           String
+  product_name      String
+  brand_name        String?
+  product_mrp       Float
+  selling_price     Float
+  product_quantity  String?
+  product_img       String[]  
+  product_category  String?
+  description       String?
+  total_stock       Int
+  threshold_stock   Int
+  gst               Int
+  offerId           String?
+  discount          Boolean   @default(false)
+  discount_value    Float     @default(0)
+  discount_price    Float     @default(0)
+  hasVariants       Boolean   @default(false)
+  availableVariants Json      
+  product_type      String
+  specifications    Json     
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("storeproducts")
+}
+
+model Order {
+  id              String   @id @default(uuid()) @map("_id")
+  userId            String
+  orderId           String    @unique
+  products          Json      
+  totalBill         Float
+  totalGst          Float
+  totalDiscount     Float
+  deliveryCharge    Float
+  finalBillToPay    Float
+  status            String
+  deliveryAddress   String?   
+  storeId           String
+  statusHistory     Json      
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("orders")
+}
