@@ -1,4 +1,4 @@
-# 🛒 Agentic-RAG: Natural Language Querying for Multi-Ecommerce Platforms
+# RAG: Natural Language Querying for Multi-Ecommerce Platforms
 
 This project implements a **Retrieval-Augmented Generation (RAG)** system over multiple e-commerce datasets. It allows users to query complex e-commerce data (orders, products, customers, stores, categories) in **natural language** and get AI-generated answers.
 
