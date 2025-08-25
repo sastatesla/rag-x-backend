@@ -10,13 +10,25 @@ class RagController {
 
     async ragChat(req, res, next) {
         const apiResponse = new ApiResponse(res);
-        const { userId, message } = req.body;
+        const { userId, message, sessionId, context } = req.body;
+        
+        // Determine user role from authenticated user
+        const userRole = req.user?.roleId ? 'admin' : 'user';
+        const isAdmin = userRole === 'admin';
 
         try {
-            const response = await RagChat.ask(message);
+            const response = await RagChat.ask({
+                message,
+                userId,
+                sessionId,
+                context,
+                userRole,
+                isAdmin
+            });
+
             return apiResponse.successResponse({
-                message: 'RAG chat response',
-                data: { response }
+                message: `${isAdmin ? 'Admin' : 'User'} RAG chat response`,
+                data: response
             });
         } catch (error) {
             next(error);
