@@ -1,4 +1,4 @@
-import { ConversationSummaryMemory } from "langchain/memory";
+import { ConversationSummaryMemory } from "langchain/memory.js";
 import { getGroqLlamaLLM } from "./llm.js";
 
 export default new ConversationSummaryMemory({

@@ -7,7 +7,6 @@
     "dev": "nodemon src/app.js",
     "start": "node src/app.js",
     "embed": "node src/utils/pc.embed.js"
-
   },
   "type": "module",
   "keywords": [],
@@ -18,6 +17,7 @@
     "@langchain/community": "^0.3.49",
     "@langchain/core": "^0.3.66",
     "@langchain/groq": "^0.2.3",
+    "@langchain/openai": "^0.6.9",
     "@langchain/pinecone": "^0.2.0",
     "@pinecone-database/pinecone": "^6.1.1",
     "@prisma/client": "^6.10.1",

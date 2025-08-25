@@ -1,8 +1,11 @@
 import { ApiResponse } from "../utils/ApiResponse.js";
+import RagChat from "../services/rag.service.js";
 
 class RagController {
     constructor() {
         this.ragChat = this.ragChat.bind(this);
+        this.getLLMStatus = this.getLLMStatus.bind(this);
+        this.switchModel = this.switchModel.bind(this);
     }
 
     async ragChat(req, res, next) {
@@ -10,11 +13,47 @@ class RagController {
         const { userId, message } = req.body;
 
         try {
-            const response = await RagService.chat(userId, message);
+            const response = await RagChat.ask(message);
             return apiResponse.successResponse({
                 message: 'RAG chat response',
-                data: response
+                data: { response }
             });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getLLMStatus(req, res, next) {
+        const apiResponse = new ApiResponse(res);
+
+        try {
+            const status = await RagChat.getLLMStatus();
+            return apiResponse.successResponse({
+                message: 'LLM status retrieved',
+                data: status
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async switchModel(req, res, next) {
+        const apiResponse = new ApiResponse(res);
+        const { modelName } = req.body;
+
+        try {
+            const success = await RagChat.switchModel(modelName);
+            if (success) {
+                return apiResponse.successResponse({
+                    message: `Successfully switched to model: ${modelName}`,
+                    data: { modelName }
+                });
+            } else {
+                return apiResponse.errorResponse({
+                    message: `Failed to switch to model: ${modelName}`,
+                    statusCode: 400
+                });
+            }
         } catch (error) {
             next(error);
         }

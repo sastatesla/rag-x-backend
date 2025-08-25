@@ -10,6 +10,16 @@ router.post(
     RagController.ragChat
 );
 
+router.get(
+    "/llm/status",
+    RagController.getLLMStatus
+);
+
+router.post(
+    "/llm/switch",
+    RagController.switchModel
+);
+
 
 
 export default router;

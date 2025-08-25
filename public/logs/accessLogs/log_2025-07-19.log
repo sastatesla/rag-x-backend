@@ -124,3 +124,7 @@ Validation Error Count: 1  ↵
 Troubleshooting URL: https://js.langchain.com/docs/troubleshooting/errors/MODEL_RATE_LIMIT/
   ↵  
     
+        CUSTOM LOGGING AT 2025-07-19 17:22:19 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-07-19 17:22:19 - [Prisma] Connected to the database  ↵  
+    
