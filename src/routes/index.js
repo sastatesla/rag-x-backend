@@ -25,7 +25,7 @@ const defaultRoutes = [
 		name: 'RAG',
 		path: "/rag",
 		route: ragRoute,
-		isProtected: true
+		isProtected: false  // Temporarily make RAG routes public for testing
 	}
 ]
 

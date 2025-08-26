@@ -1,8 +1,9 @@
-import { RetrievalQAChain } from "langchain/chains/retrieval_qa";
+// Custom RAG implementation - removed RetrievalQAChain due to context passing issues
 import ConversationSummaryMemory from "../utils/memory.js";
 import {getGroqLlamaLLM} from "../utils/llm.js";
-import LocalLLMManager, { getBestAvailableLLM } from "../utils/localLLM.js";
+import LocalLLMManager from "../utils/localLLM.js";
 import {getRetriever} from "../utils/pc.retriever.js";
+import GeminiManager, { isGeminiAvailable } from "../utils/gemini.js";
 
 class RagChat {
   constructor() {
@@ -14,7 +15,7 @@ class RagChat {
   async initializeLLM() {
     if (!this.llm) {
       try {
-        this.llm = await getBestAvailableLLM();
+        this.llm = await this.localLLMManager.getBestLLM();
         console.log("[RagChat] LLM initialized successfully");
       } catch (error) {
         console.error("[RagChat] Failed to initialize LLM:", error.message);
@@ -49,19 +50,45 @@ class RagChat {
     
     const retriever = await this.getRetriever();
     
-    // Create role-specific prompt enhancement
-    const enhancedMessage = this.enhancePromptForRole(message, userRole, context);
+    // Get relevant documents from vector store
+    const relevantDocs = await retriever.getRelevantDocuments(message);
     
-    const chain = RetrievalQAChain.fromLLM(
-      llm,
-      retriever,
-      { memory: this.memory }
-    );
+    // Build context from retrieved documents
+    const retrievedContext = relevantDocs.map((doc, index) => {
+      const content = doc.pageContent || doc.metadata?.chunk_text || '';
+      return content;
+    }).join('\n\n');
     
-    const response = await chain.call({ question: enhancedMessage });
+    // Create role-specific prompt with retrieved context
+    const enhancedPrompt = this.buildRAGPrompt(message, userRole, context, retrievedContext);
+    
+    // Get response from LLM
+    const llmResponse = await llm.invoke(enhancedPrompt);
+    const responseText = llmResponse.content || llmResponse;
     
     // Format response based on role
-    return this.formatResponseForRole(response.text, userRole, sessionId);
+    return this.formatResponseForRole(responseText, userRole, sessionId);
+  }
+
+  buildRAGPrompt(message, userRole, context, retrievedContext) {
+    const basePrompt = `You are a helpful AI assistant. Use the following retrieved information to answer the user's question accurately.
+
+Retrieved Information:
+${retrievedContext}
+
+${userRole === 'admin' 
+  ? `You are acting as an admin analytics assistant for an Indian e-commerce business. Provide detailed business insights and data analysis based on the retrieved information. Focus on metrics, trends, and actionable recommendations. 
+
+IMPORTANT: Always use Indian Rupees (₹) for all currency amounts, never use dollars ($). Convert any amounts to Indian currency format with ₹ symbol. For example: ₹1,250 instead of $15.` 
+  : `You are acting as a customer support assistant for an Indian e-commerce platform. Help the customer with their query using the retrieved information. Use Indian Rupees (₹) for all price mentions.`}
+
+${context ? `Additional Context: ${context}\n` : ''}
+
+User Question: ${message}
+
+Answer based on the retrieved information above. Remember to use ₹ (Indian Rupees) for all monetary values:`;
+
+    return basePrompt;
   }
 
   enhancePromptForRole(message, userRole, context) {
@@ -109,23 +136,68 @@ class RagChat {
     // Extract key metrics and insights from admin response
     const insights = [];
     
+    // Look for order counts
+    const orderCountMatches = response.match(/(\d+)\s*(orders?|Orders?)/g);
+    if (orderCountMatches && orderCountMatches.length > 0) {
+      const count = orderCountMatches[0].match(/\d+/)[0];
+      insights.push({ 
+        type: 'count', 
+        value: count, 
+        title: 'Total Orders',
+        icon: 'chart'
+      });
+    }
+    
+    // Look for revenue patterns (₹, rupee, or dollar amounts - convert $ to ₹)
+    const revenueMatches = response.match(/(₹\d+[,\d]*\.?\d*|rupee[s]?\s*\d+[,\d]*\.?\d*|\$\d+[,\d]*\.?\d*|revenue.*?[\₹\$]?(\d+[,\d]*\.?\d*))/gi);
+    if (revenueMatches && revenueMatches.length > 0) {
+      let revenueMatch = revenueMatches[0];
+      let amount = revenueMatch.match(/\d+[,\d]*\.?\d*/)[0].replace(/\.$/, '');
+      
+      // Convert dollar amounts to rupees (approximate 1 USD = 83 INR)
+      if (revenueMatch.includes('$')) {
+        amount = Math.round(parseFloat(amount.replace(/,/g, '')) * 83).toLocaleString('en-IN');
+      }
+      
+      insights.push({ 
+        type: 'currency', 
+        value: `₹${amount}`, 
+        title: 'Total Revenue',
+        icon: 'rupee'
+      });
+    }
+    
+    // Look for average patterns
+    const averageMatches = response.match(/average.*?[\₹\$]?(\d+[,\d]*\.?\d*)/gi);
+    if (averageMatches && averageMatches.length > 0) {
+      let avgMatch = averageMatches[0];
+      let amount = avgMatch.match(/\d+[,\d]*\.?\d*/)[0].replace(/\.$/, '');
+      
+      // Convert dollar amounts to rupees if needed
+      if (avgMatch.includes('$')) {
+        amount = Math.round(parseFloat(amount.replace(/,/g, '')) * 83).toLocaleString('en-IN');
+      }
+      
+      insights.push({ 
+        type: 'currency', 
+        value: `₹${amount}`, 
+        title: 'Average Order Value',
+        icon: 'rupee'
+      });
+    }
+    
     // Look for percentage patterns
     const percentageMatches = response.match(/\d+\.?\d*%/g);
-    if (percentageMatches) {
-      percentageMatches.forEach(match => {
-        insights.push({ type: 'percentage', value: match });
+    if (percentageMatches && percentageMatches.length > 0) {
+      insights.push({ 
+        type: 'percentage', 
+        value: percentageMatches[0],
+        title: 'Growth Rate',
+        icon: 'chart'
       });
     }
 
-    // Look for currency patterns
-    const currencyMatches = response.match(/\$\d+,?\d*\.?\d*/g);
-    if (currencyMatches) {
-      currencyMatches.forEach(match => {
-        insights.push({ type: 'currency', value: match });
-      });
-    }
-
-    return insights.slice(0, 5); // Limit to top 5 insights
+    return insights.slice(0, 4); // Limit to top 4 insights for better layout
   }
 
   extractActionItems(response) {
@@ -166,13 +238,58 @@ class RagChat {
 
   async getLLMStatus() {
     const isLocalAvailable = await this.localLLMManager.isLocalLLMAvailable();
+    const isGeminiReady = await isGeminiAvailable();
     const models = await this.getAvailableModels();
     
+    // Determine current provider based on priority
+    let currentProvider = "unknown";
+    let currentModel = "unknown";
+    
+    if (this.localLLMManager.config.useGemini && isGeminiReady) {
+      currentProvider = "gemini";
+      currentModel = "gemini-1.5-pro"; // Use env variable or default
+    } else if (isLocalAvailable) {
+      currentProvider = "local";
+      currentModel = this.localLLMManager.config.localModel;
+    } else if (this.localLLMManager.config.useGroqFallback) {
+      currentProvider = "groq";
+      currentModel = "llama-3-70b-8192";
+    }
+    
     return {
+      isAvailable: isGeminiReady || isLocalAvailable || this.localLLMManager.config.useGroqFallback,
+      currentProvider,
+      currentModel,
+      model: currentModel, // For backward compatibility
+      provider: currentProvider, // For backward compatibility
+      
+      // Individual provider status
+      geminiAvailable: isGeminiReady,
       localLLMAvailable: isLocalAvailable,
-      currentModel: this.localLLMManager.config.localModel,
+      groqAvailable: this.localLLMManager.config.useGroqFallback,
+      
+      // Configuration
+      providers: {
+        gemini: {
+          enabled: this.localLLMManager.config.useGemini,
+          available: isGeminiReady,
+          model: "gemini-1.5-pro"
+        },
+        local: {
+          enabled: true,
+          available: isLocalAvailable,
+          model: this.localLLMManager.config.localModel
+        },
+        groq: {
+          enabled: this.localLLMManager.config.useGroqFallback,
+          available: this.localLLMManager.config.useGroqFallback,
+          model: "llama-3-70b-8192"
+        }
+      },
+      
       availableModels: models,
-      fallbackEnabled: this.localLLMManager.config.useGroqFallback
+      uptime: Date.now(), // Simple uptime indicator
+      lastCheck: new Date()
     };
   }
 }

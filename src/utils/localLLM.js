@@ -1,5 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { getGroqLlamaLLM } from "./llm.js";
+import { getGeminiLLM, isGeminiAvailable } from "./gemini.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -10,7 +11,8 @@ dotenv.config();
 class LocalLLMManager {
   constructor() {
     this.config = {
-      // Primary local LLM configuration
+      // Primary LLM preference (gemini > local > groq)
+      useGemini: process.env.USE_GEMINI !== "false", // Default to true
       localUrl: process.env.LOCAL_LLM_URL || "http://localhost:11434",
       localModel: process.env.LOCAL_LLM_MODEL || "deepseek-r1:latest",
       
@@ -43,6 +45,13 @@ class LocalLLMManager {
   }
 
   /**
+   * Get Gemini LLM
+   */
+  getGeminiLLM() {
+    return getGeminiLLM();
+  }
+
+  /**
    * Get Groq fallback LLM
    */
   getFallbackLLM() {
@@ -51,25 +60,38 @@ class LocalLLMManager {
 
   /**
    * Get best available LLM with automatic fallback
+   * Priority: Gemini > Local LLM > Groq
    */
   async getBestLLM() {
+    // Try Gemini first if enabled
+    if (this.config.useGemini) {
+      try {
+        if (await isGeminiAvailable()) {
+          console.log("[LLM] Using Gemini AI");
+          return this.getGeminiLLM();
+        }
+      } catch (error) {
+        console.warn(`[LLM] Gemini unavailable: ${error.message}`);
+      }
+    }
+
+    // Try local LLM second
     try {
-      // Test local LLM availability
       if (await this.isLocalLLMAvailable()) {
-        console.log(`[LocalLLM] Using local model: ${this.config.localModel}`);
+        console.log(`[LLM] Using local model: ${this.config.localModel}`);
         return this.getLocalLLM();
       }
     } catch (error) {
-      console.warn(`[LocalLLM] Local LLM unavailable: ${error.message}`);
+      console.warn(`[LLM] Local LLM unavailable: ${error.message}`);
     }
 
     // Fallback to Groq if configured
     if (this.config.useGroqFallback) {
-      console.log("[LocalLLM] Falling back to Groq");
+      console.log("[LLM] Falling back to Groq");
       return this.getFallbackLLM();
     }
 
-    throw new Error("No available LLM found. Check local LLM setup or enable Groq fallback.");
+    throw new Error("No available LLM found. Check Gemini API key, local LLM setup, or enable Groq fallback.");
   }
 
   /**

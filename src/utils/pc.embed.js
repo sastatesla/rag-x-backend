@@ -1,15 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { Pinecone } from '@pinecone-database/pinecone';
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import dotenv from 'dotenv';
 import pinecone from '../configs/pinecone.js';
 import { chunkCategory, chunkCustomer, chunkOrder, chunkProduct, chunkStore } from '../helpers/chunk&upsert.js';
 import eventEmitter from './logging.js';
+import { getGeminiEmbeddings } from './gemini.js';
 dotenv.config();
 
 const prisma = new PrismaClient();
 const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME);
-const embedder = new OpenAIEmbeddings({ openAIApiKey: process.env.OPENAI_API_KEY,maxConcurrency: 2 });
+
+// Use Gemini embeddings instead of OpenAI
+const embedder = getGeminiEmbeddings();
 
 async function embedAndUpsert(chunk) {
   const existing = await pineconeIndex.fetch([chunk.id]);

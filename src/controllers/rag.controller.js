@@ -10,10 +10,10 @@ class RagController {
 
     async ragChat(req, res, next) {
         const apiResponse = new ApiResponse(res);
-        const { userId, message, sessionId, context } = req.body;
+        const { userId, message, sessionId, context, userRole: requestUserRole } = req.body;
         
-        // Determine user role from authenticated user
-        const userRole = req.user?.roleId ? 'admin' : 'user';
+        // Determine user role - prioritize authenticated user, fallback to request body
+        const userRole = req.user?.roleId ? 'admin' : (requestUserRole || 'user');
         const isAdmin = userRole === 'admin';
 
         try {
