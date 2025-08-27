@@ -3,7 +3,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import dotenv from 'dotenv';
 import pinecone from '../configs/pinecone.js';
-import { chunkCategory, chunkCustomer, chunkOrder, chunkProduct, chunkStore } from '../helpers/chunk&upsert.js';
+import { chunkShorts, chunkProducts } from '../helpers/chunk&upsert.js';
 import eventEmitter from './logging.js';
 import { getGeminiEmbeddings } from './gemini.js';
 dotenv.config();
@@ -35,42 +35,27 @@ async function embedAndUpsert(chunk) {
 }
 
 async function upsertAllChunks() {
-  // Orders
-  const orders = await prisma.order.findMany();
-  for (const o of orders) {
-    const chunk = await chunkOrder(o);
+  let totalProcessed = 0;
+  
+  // Shorts
+  const shorts = await prisma.shorts.findMany();
+  console.log(`Found ${shorts.length} shorts to process`);
+  for (const s of shorts) {
+    const chunk = await chunkShorts(s);
     await embedAndUpsert(chunk);
+    totalProcessed++;
   }
 
   // Products
-  const products = await prisma.storeProduct.findMany();
+  const products = await prisma.products.findMany();
+  console.log(`Found ${products.length} products to process`);
   for (const p of products) {
-    const chunk = await chunkProduct(p);
+    const chunk = await chunkProducts(p);
     await embedAndUpsert(chunk);
+    totalProcessed++;
   }
 
-  // Customers
-  const customers = await prisma.customer.findMany();
-  for (const c of customers) {
-    const chunk = await chunkCustomer(c);
-    await embedAndUpsert(chunk);
-  }
-
-  // Stores
-  const stores = await prisma.store.findMany();
-  for (const s of stores) {
-    const chunk = await chunkStore(s);
-    await embedAndUpsert(chunk);
-  }
-
-  // Categories
-  const categories = await prisma.category.findMany();
-  for (const c of categories) {
-    const chunk = await chunkCategory(c);
-    await embedAndUpsert(chunk);
-  }
-
-  eventEmitter.emit('logging',`All chunks embedded and upserted to Pinecone!`);
+  eventEmitter.emit('logging',`All ${totalProcessed} chunks embedded and upserted to Pinecone!`);
 }
 upsertAllChunks()
   .catch((err) => {

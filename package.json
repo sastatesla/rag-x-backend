@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js",
     "start": "node src/app.js",
-    "embed": "node src/utils/pc.embed.js"
+    "embed": "node src/utils/pc.embed.js",
+    "clear-pinecone": "node src/utils/pc.clear.js"
   },
   "type": "module",
   "keywords": [],

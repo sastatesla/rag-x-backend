@@ -707,3 +707,75 @@ Error converting field "selling_price" of expected non-nullable type "Float", fo
     
         CUSTOM LOGGING AT 2025-08-26 07:43:18 - [Prisma] Connected to the database  ↵  
     
+        CUSTOM LOGGING AT 2025-08-26 15:02:06 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:02:06 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:18 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:18 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:30 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:30 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:42 - Starting to clear all vectors from Pinecone...  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:14:46 - Successfully cleared all vectors from Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:18:01 - All chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:53:59 - Starting to clear all vectors from Pinecone...  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:56:31 - Starting to clear all vectors from Pinecone...  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:56:35 - Successfully cleared all vectors from Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:56:52 - All chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:58:04 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 15:58:04 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:00:40 - All chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:06:20 - Error during upsertAllChunks: Cannot read properties of undefined (reading 'findMany')  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:19:19 - All chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:20:17 - All chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:24:05 - All 0 chunks embedded and upserted to Pinecone!  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:29:32 - Error during upsertAllChunks: Cannot read properties of undefined (reading 'findMany')  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:31:22 - Error during upsertAllChunks: 
+Invalid `prisma.shorts.findMany()` invocation:
+
+
+Error converting field "videoId" of expected non-nullable type "String", found incompatible value of "null".  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:32:39 - Error during upsertAllChunks: 
+Invalid `prisma.shorts.findMany()` invocation:
+
+
+Error converting field "title" of expected non-nullable type "String", found incompatible value of "null".  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:34:59 - Error during upsertAllChunks: 
+Invalid `prisma.shorts.findMany()` invocation:
+
+
+Error converting field "createdAt" of expected non-nullable type "DateTime", found incompatible value of "null".  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:36:14 - Error during upsertAllChunks: 
+Invalid `prisma.shorts.findMany()` invocation:
+
+
+Error converting field "createdAt" of expected non-nullable type "DateTime", found incompatible value of "null".  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:41:32 - [App] Server started on port 4000  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:41:32 - [Prisma] Connected to the database  ↵  
+    
+        CUSTOM LOGGING AT 2025-08-26 16:49:38 - All 154 chunks embedded and upserted to Pinecone!  ↵  
+    
