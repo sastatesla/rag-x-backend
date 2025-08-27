@@ -6,7 +6,7 @@ Built with:
 - 🧠 LangChain for LLM + RAG orchestration
 - 🔥 Pinecone for vector search
 - 🪝 Prisma for database ORM (MongoDB support)
-- 🤖 LLMs like OpenAI 
+- 🤖 LLMs on prem and remote models like OpenAI & Gemini, Gemma & R1
 
 ---
 
@@ -21,7 +21,7 @@ Built with:
 ✅ Embeds and syncs database chunks (orders, products, etc.) into Pinecone
 
 ✅ Works with:
-- OpenAI (`gpt-4`, `text-embedding
+- Gemini (`1.5pro`, `text-embedding
 
 
 ✅ Handles large datasets using chunking and upserting
@@ -33,7 +33,7 @@ Built with:
 | Layer           | Tool/Service                     |
 |-----------------|-----------------------------------|
 | Vector DB       | Pinecone                          |
-| Embeddings      | OpenAI    |
+| Embeddings      | Gemini |
 | ORM             | Prisma                            |
 | Database        | MongoDB                           |
 | Framework       | Node.js (ESM) + LangChain         |
